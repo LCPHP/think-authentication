@@ -10,8 +10,6 @@ define('RUNTIME_PATH', 'runtime');
 $database = [
     // 数据库类型
     'type'           => 'mysql',
-    // 数据库连接DSN配置
-    'dsn'            => '',
     // 服务器地址
     'hostname'       => 'localhost',
     // 数据库名
@@ -22,26 +20,11 @@ $database = [
     'password'       => 'root',
     // 数据库连接端口
     'hostport'       => '3306',
-    // 数据库连接参数
-    'params'         => [],
     // 数据库编码默认采用utf8
     'charset'        => 'utf8',
     // 数据库表前缀
     'prefix'         => 't_',
-    // 数据库调试模式
-    'debug'          => false,
-    // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
-    'deploy'         => 0,
-    // 数据库读写是否分离 主从式有效
-    'rw_separate'    => false,
-    // 读写分离后 主服务器数量
-    'master_num'     => 1,
-    // 指定从服务器序号
-    'slave_no'       => '',
-    // 是否严格检查字段是否存在
-    'fields_strict'  => true,
-    // 自动写入时间戳字段
-    'auto_timestamp' => false,
+
 ];
 
 Config::set('database' , $database);
@@ -49,21 +32,30 @@ Config::set('database' , $database);
 
 $auth = new Auth();
 
+// 测试用户id为1
 $uid = 1;
-// $groupIds = $auth->getRules($uid);
 
-// print_r($groupIds);
+// $check = $auth->check('test', $uid);
+// result : '验证通过'
 
+// $check = $auth->check('route' , $uid);
+// result : Array ( [error_code] => 100002 [error_msg] => 验证规则无权限 )
 
-// $check = $auth->checkRule('route', $uid);
+// $check = $auth->check('norule' , $uid);
+// result : Array ( [error_code] => 100001 [error_msg] => 验证规则不存在 )
 
-$check = $auth->check('test,route', $uid , 'and');
+// $check = $auth->check('test,route', $uid , 'and');
+// result : Array ( [error_code] => 100002 [error_msg] => 验证规则无权限 )
+
+$check = $auth->check('test,route', $uid , 'or');
+// result : 验证通过
+
 
 if (!$check){
+    // 验证不通过可以查看验证不通过错误代码
     $error = $auth->getErrorInfo();
-    
     print_r($error);
-    
+
 }else{
-    echo 1;
+    echo '验证通过';
 }
