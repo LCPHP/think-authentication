@@ -8,10 +8,17 @@ composer require niklaslu/think-authentication
 ```
 
 ### Auth Class
-
-|方法|说明|参数|
-|--|--|--|
-|check|检验权限|$name:权限名称，$uid：用户id， $relation:验证关系'and','or'|
+```
+/**
+     *
+     * @param string $name 规则名称,多个用，隔开
+     * @param int $uid 用户id
+     * @param string $tpye and:且关系 or: 或关系
+     */
+    public function check($name , $uid , $relation = 'and'){
+       // code ......
+    }
+```
 
 说明：
 + $name可为多条规则, 用`,`分隔
@@ -110,7 +117,7 @@ CREATE TABLE `t_user` (
 
 已带有测试数据的db文件导入为例，具体可查看`index.php`  
 
-```
+```php
 <?php
 
 require_once 'vendor/autoload.php';
