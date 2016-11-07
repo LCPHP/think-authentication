@@ -8,7 +8,7 @@ composer require niklaslu/think-authentication
 ```
 
 ### Auth Class
-```
+```php
 /**
      *
      * @param string $name 规则名称,多个用，隔开
